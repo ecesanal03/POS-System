@@ -1,62 +1,78 @@
-import React, { useState } from "react";
-import { Container, TextField, Button, Typography, Box, Paper } from "@mui/material";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/login.css';
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+const SignInProto = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
 
-  const handleLogin = () => {
-    if (!email || !password) {
-      setError("Both fields are required");
-      return;
-    }
-    setError(""); // Clear error on success
-    console.log("Logging in with:", { email, password });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form submitted:', formData);
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
-    <Container maxWidth="xs">
-      <Box 
-        display="flex" 
-        flexDirection="column" 
-        alignItems="center" 
-        justifyContent="center" 
-        minHeight="100vh"
-      >
-        <Paper elevation={4} sx={{ p: 4, width: "100%", borderRadius: 3 }}>
-          <Typography variant="h4" gutterBottom align="center" fontWeight="bold">
-            Login
-          </Typography>
-          {error && (
-            <Typography color="error" variant="body2" align="center">
-              {error}
-            </Typography>
-          )}
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Email"
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Password"
-            type="password"
-            variant="outlined"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button fullWidth variant="contained" color="primary" sx={{ mt: 3, p: 1.5 }} onClick={handleLogin}>
-            Login
-          </Button>
-        </Paper>
-      </Box>
-    </Container>
+    <div className="signin-container">
+      <div className="image-box">
+        <img src="https://shorturl.at/woo7A" alt="jpeg" className="image" />
+      </div>
+      <div className="signin-box">
+        <h1>Sign In To Your Account</h1>
+        
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <input
+              type="text"
+              id="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group password-group">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <span className="toggle-password" onClick={togglePasswordVisibility}>
+              {showPassword ? '👁️' : '🙈'}
+            </span>
+          </div>
+
+          <button type="submit" className="continue-button">
+            Sign In
+          </button>
+        </form>
+
+        <div className="signup-link">
+          Don't have an account? <Link to="/signup-proto">Create one</Link>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default Login;
+export default SignInProto;

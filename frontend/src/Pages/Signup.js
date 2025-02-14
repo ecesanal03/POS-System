@@ -1,106 +1,122 @@
-import React, { useState } from "react";
-import { 
-  Container, TextField, Button, Typography, Paper, MenuItem 
-} from "@mui/material";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/SignUp.css';
 
-const states = [
-  { code: "AL", name: "Alabama" }, { code: "AK", name: "Alaska" }, { code: "AZ", name: "Arizona" },
-  { code: "AR", name: "Arkansas" }, { code: "CA", name: "California" }, { code: "CO", name: "Colorado" },
-  { code: "CT", name: "Connecticut" }, { code: "DE", name: "Delaware" }, { code: "FL", name: "Florida" }
-  // Add more states as needed
-];
+const SignUpProto = () => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
 
-const Signup = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zip, setZip] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignup = () => {
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Future implementation: Handle form submission
+    console.log('Form submitted:', formData);
+  };
 
-    console.log("Signing up with:", {
-      email, phone, address1, address2, city, state, zip, password
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
     });
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <Container
-      maxWidth="xs"
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}
-    >
-      <Paper elevation={6} sx={{ p: 4, borderRadius: 3, width: "100%", textAlign: "center" }}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
-          Create an Account
-        </Typography>
-        <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-          Join us today! It takes only a few steps.
-        </Typography>
+    <div className="signup-container">
+      <div className="image-box">
+        <img src="https://shorturl.at/woo7A" alt="jpeg" className="image" />
+      </div>
+      <div className="signup-box">
+        <h1>Create account</h1>
+        
+        <form onSubmit={handleSubmit}>
+          <div className="name-group">
+            <div className="form-group half">
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                placeholder="First name"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group half">
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="Last name"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
 
-        <TextField
-          fullWidth margin="dense" label="Email" variant="outlined" value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          fullWidth margin="dense" label="Phone Number" variant="outlined" value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-        <TextField
-          fullWidth margin="dense" label="Address Line 1" variant="outlined" value={address1}
-          onChange={(e) => setAddress1(e.target.value)}
-        />
-        <TextField
-          fullWidth margin="dense" label="Address Line 2 (Optional)" variant="outlined" value={address2}
-          onChange={(e) => setAddress2(e.target.value)}
-        />
-        <TextField
-          fullWidth margin="dense" label="City" variant="outlined" value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-        <TextField
-          fullWidth margin="dense" select label="State" variant="outlined" value={state}
-          onChange={(e) => setState(e.target.value)}
-        >
-          {states.map((s) => (
-            <MenuItem key={s.code} value={s.code}>{s.name}</MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          fullWidth margin="dense" label="Zip Code" variant="outlined" value={zip}
-          onChange={(e) => setZip(e.target.value)}
-        />
-        <TextField
-          fullWidth margin="dense" label="Password" type="password" variant="outlined" value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <TextField
-          fullWidth margin="dense" label="Confirm Password" type="password" variant="outlined" value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+          <div className="form-group">
+            <input
+              type="text"
+              id="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <Button
-          fullWidth variant="contained" color="primary"
-          sx={{ mt: 3, p: 1.5, borderRadius: 2, fontWeight: "bold" }}
-          onClick={handleSignup}
-        >
-          Sign Up
-        </Button>
+          <div className="form-group password-group">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <span className="toggle-password" onClick={togglePasswordVisibility}>
+              {showPassword ? '👁️' : '🙈'}
+            </span>
+            <div className="password-hint">
+              Passwords must be at least 6 characters.
+            </div>
+          </div>
 
-        <Typography variant="body2" sx={{ mt: 2 }}>
-          Already have an account? <a href="/login" style={{ color: "#3A7CA5", textDecoration: "none" }}>Login</a>
-        </Typography>
-      </Paper>
-    </Container>
+          <div className="form-group">
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Re-enter password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit" className="continue-button">
+            Create account
+          </button>
+        </form>
+
+        <div className="signin-link">
+          Already have an account? <Link to="/signin-proto">Sign in</Link>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default Signup;
-
+export default SignUpProto;
